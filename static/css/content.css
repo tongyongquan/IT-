@@ -1,0 +1,21 @@
+
+.page01 .container .carousel-inner .item img {
+    width: 100%;
+    height: 100%;
+}
+
+.container .well a.label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.list-group-item .glyphicon-menu-right {
+    font-size: 1px;
+}
+
+a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading {
+    color: #2b669a;
+}
+.list-group-item-text{
+    text-indent: 2em;
+}

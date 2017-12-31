@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}详情{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/content.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='lib/paginator/myPage.css') }}">
+{% endblock %}
+
+{% block main %}
+    <section class="page01">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <ol class="breadcrumb">
+                        <li><span>当前位置:</span></li>
+                        <li><a href="/">主页</a></li>
+                        <li><a href="#">vue面试通</a></li>
+                        <li class="active">Data</li>
+                    </ol>
+
+                    <!-- 媒体对象 -->
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     style="width: 64px; height: 64px;"
+                                     src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjA5YzIwMDFjNCB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2MDljMjAwMWM0Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi41IiB5PSIzNi44Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                     data-holder-rendered="true">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                                <a href="">[vue面试通]</a>
+                                <a href="">[面试]</a>
+                                <a href="">面试官问：你还有什么要问的吗？</a>
+                            </h5>
+                            <h6 class="media-middle">
+                                <span>日期：</span><span>2017-12-18 12:21:36</span>
+                                <span>点击：</span><span>225</span>
+                                <span>好评：</span><span>4</span>
+                            </h6>
+                            <span>
+                                JavaScript的组成 JavaScript 由以下三部分组成： ECMAScript（核心）：JavaScript 语言基础 DOM（文档对象模型）
+                                ：规定了访问HTML和XML的接口 BOM（浏览器对象模型）：提供了浏览器窗口之间进行...
+                            </span>
+                        </div>
+                    </div>
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     style="width: 64px; height: 64px;"
+                                     src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjA5YzIwMDFjNCB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2MDljMjAwMWM0Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi41IiB5PSIzNi44Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                     data-holder-rendered="true">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                                <a href="">[vue面试通]</a>
+                                <a href="">[面试]</a>
+                                <a href="">面试官问：你还有什么要问的吗？</a>
+                            </h5>
+                            <h6 class="media-middle">
+                                <span>日期：</span><span>2017-12-18 12:21:36</span>
+                                <span>点击：</span><span>225</span>
+                                <span>好评：</span><span>4</span>
+                            </h6>
+                            <span>
+                                JavaScript的组成 JavaScript 由以下三部分组成： ECMAScript（核心）：JavaScript 语言基础 DOM（文档对象模型）
+                                ：规定了访问HTML和XML的接口 BOM（浏览器对象模型）：提供了浏览器窗口之间进行...
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 分页 -->
+                    <div class="text-center">
+                        <ul class="pagination" id="pagination">
+                        </ul>
+                        <input type="hidden" id="PageCount" runat="server" value="60"/>
+                        <input type="hidden" id="PageSize" runat="server" value="10" />
+                        <input type="hidden" id="countindex" runat="server" value="6" />
+                        <input type="hidden" id="currentPage" runat="server" value="2" />
+                        <input type="hidden" id="baseUrl" runat="server" value="/content/?page=" />
+                        <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                        <input type="hidden" id="visiblePages" runat="server" value="5" />
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <ol class="breadcrumb">
+                        <li class="">栏目列表</li>
+                    </ol>
+                    <div class="well">
+                        <a class="label label-primary">主要样式（蓝色）</a>
+                        <a class="label label-primary">面试</a>
+                        <a class="label label-primary">vue面试</a>
+                        <a class="label label-primary">题库</a>
+                    </div>
+                    <hr>
+                    <div class="list-group">
+                        <span class="list-group-item active">
+                            <h5 class="list-group-item-heading">推荐内容</h5>
+                        </span>
+                        <a href="#" class="list-group-item">
+                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                            <span class="list-group-item-heading">Vuex状态管理模式的面试题及答案</span>
+                            <p class="list-group-item-text">1、vuex有哪几种属性？ 答：有五种，分别是 State、 Getter、Mutat...</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                            <span class="list-group-item-heading">6个推荐内容</span>
+                            <p class="list-group-item-text">6个推荐内容</p>
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="list-group">
+                        <span class="list-group-item active">热点内容</span>
+                        <a href="#" class="list-group-item">杭州网站设计</a>
+                        <a href="#" class="list-group-item">杭州网站制作</a>
+                        <a href="#" class="list-group-item">网站建设知识</a>
+                        <a href="#" class="list-group-item">10个热点内容</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block js %}
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static',filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/paginator/jqPaginator.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/paginator/myPage.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/content.js') }}"></script>
+{% endblock %}

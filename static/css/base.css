@@ -1,0 +1,24 @@
+.header > .container .logo {
+    margin: 20px 0;
+}
+
+a:focus {
+    text-decoration: none
+}
+
+.header .navbar-default {
+    background-color: #00645D;
+}
+
+.header .navbar-default .navbar-nav > li > a {
+    color: #fff;
+}
+
+.header .navbar-default .navbar-nav > .active > a {
+    background-color: rgb(3, 46, 43);
+    color: rgb(209, 228, 43);
+}
+
+.page-title{
+    text-align: center;
+}
