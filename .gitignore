@@ -135,4 +135,4 @@ Desktop.ini
 ######################
 # migrations
 ######################
-migrations/versions/*
+migrations/versions/*.py
