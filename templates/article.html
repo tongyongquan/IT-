@@ -1,6 +1,6 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 {% block title %}
-详情
+    详情
 {% endblock %}
 
 {% block head %}
@@ -10,81 +10,102 @@
 {% block main %}
 
     <div class="container">
-    <div class="row">
-        <div class="col-md-9">
-  <ol class="breadcrumb">
-                        <li><span>当前位置:</span></li>
-                        <li><a href="#">主页</a></li>
-                        <li><a href="#">vue面试通</a></li>
-                        <li class="active">Data</li>
-                    </ol>
-    <div class="page-header">
-  <h1>{{ article.title }} <small>时间:{{article.create_time}}作者:{{ article.author.username }}</small></h1>
-    </div>
-
-    <div class="jumbotron">
-        简介
-    </div>
-
-    <div class="form-container">
-              <button class="btn btn-primary " type="button">
-  赞 <span class="badge">4</span>
-</button>
-        <hr>
-
-    <form action="" method="POST">
-        <div class="form-group">
-            <textarea class="form-control" name="pinglun"  rows="5" placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。"></textarea>
-        </div>
         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">匿名?</div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-primary ">发布评论</button>
-            </div>
-
-</div>
-    </form>
-    </div>
-
-    </div>
-        <div class="col-md-3">
-                    <ol class="breadcrumb">
-                        <li class="">栏目列表</li>
-                    </ol>
-                    <div class="well">
-                        <a class="label label-primary">主要样式（蓝色）</a>
-                        <a class="label label-primary">面试</a>
-                        <a class="label label-primary">vue面试</a>
-                        <a class="label label-primary">题库</a>
-                    </div>
-                    <hr>
-                    <div class="list-group">
-                        <span class="list-group-item active">
-                            <h5 class="list-group-item-heading">推荐内容</h5>
-                        </span>
-                        <a href="#" class="list-group-item">
-                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                            <span class="list-group-item-heading">Vuex状态管理模式的面试题及答案</span>
-                            <p class="list-group-item-text">1、vuex有哪几种属性？ 答：有五种，分别是 State、 Getter、Mutat...</p>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                            <span class="list-group-item-heading">6个推荐内容</span>
-                            <p class="list-group-item-text">6个推荐内容</p>
-                        </a>
-                    </div>
-                    <hr>
-                    <div class="list-group">
-                        <span class="list-group-item active">热点内容</span>
-                        <a href="#" class="list-group-item">杭州网站设计</a>
-                        <a href="#" class="list-group-item">杭州网站制作</a>
-                        <a href="#" class="list-group-item">网站建设知识</a>
-                        <a href="#" class="list-group-item">10个热点内容</a>
-                    </div>
+            <div class="col-md-9">
+                {% import '_macros_content_top_label.html' as content_top_label  %}
+                {{ content_top_label.content_top_label(path_label) }}
+                <div class="page-header">
+                    <h1 class="article-title">{{ article.title }}</h1>
+                    <h3>
+                        <small class="article-info">
+                            作者:{{ article.author.username+'  ' }}发布时间:{{ article.create_time }}</small>
+                    </h3>
                 </div>
-</div>
-</div>
+
+                <div class="jumbotron">
+                    {{ article.info }}
+                </div>
+                <div id="box" style="display: none">
+                    {{  content }}
+                </div>
+                <div id="article" >
+
+                </div>
+                <script>
+{#                                    document.getElementById('box').innerHTML="{{ article.content }}";#}
+                    document.getElementById('article').innerHTML = document.getElementById('box').innerText
+
+                </script>
+
+                <div class="form-container">
+                    <button class="btn btn-primary " type="button">赞 <span class="badge">4</span>
+                    </button>
+                    <hr>
+
+                    <form action="{{ url_for('add_comment',article_id=article.id) }}" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" name="comment_content" rows="5"
+                                      placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary ">发布评论</button>
+                            </div>
+
+                            <hr>
+                            <ul class="col-md-12">
+
+                                {% for comment in comment_paginate.items %}
+                                    <li>
+                                        <hr>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="#">
+                                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                                         style="width: 64px; height: 64px;"
+                                                         src="{{ url_for('static',filename=comment.user.avatar_path) }}"
+                                                         data-holder-rendered="true">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                            <span class="comment-content">
+                                {{ comment.content }}
+                            </span>
+                                                <h4 class="media-heading">
+                                                    <a href="">{{ comment.user.username }}</a>
+                                                </h4>
+                                                <h6 class="media-middle">
+                                                    <span>{{ comment. create_time }}</span>
+
+                                                </h6>
+
+                                            </div>
+                                        </div>
+
+                                    </li>
+
+
+                                {% endfor %}
+                                <!-- 分页 -->
+                                {%import '_macros_pagination.html' as macros %}
+                                {% if comment_paginate %}
+                                    {{ macros.pagination_widget(comment_paginate,base_url+'?page=') }}
+                                {% endif %}
+                            </ul>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                {% import '_macros_content_right.html' as content_right %}
+                {{ content_right.content_right(column_label_list,recommended_content,hot_content) }}
+            </div>
+        </div>
+    </div>
 
 
 {% endblock %}

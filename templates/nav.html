@@ -19,30 +19,35 @@
                 <li>
                     <a href="{{ url_for('index') }}">主页</a>
                 </li>
-                <li>
-                    <a href="{{ url_for('content') }}">content</a>
-                </li>
-                <li>
-                    <a href="#">article</a>
-                </li>
-                <li>
-                    <a href="#">大前端知识</a>
-                </li>
-                <li>
-                    <a href="#">挨踢职场</a>
-                </li>
+{#                <li>#}
+{#                    <a href="{{ url_for('content_main') }}">content</a>#}
+{#                </li>#}
+                {% for label in nav_label %}
+                    <li>
+                        <a href="{{ url_for('content',label_id=label.id) }}">{{ label.name }}</a>
+                    </li>
+                {% endfor %}
                 <li>
                     <a href="#">匿名社区</a>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="{{ url_for('login') }}">登录</a>
-                </li>
-                <li>
-                    <a href="#">注册</a>
-                </li>
+                {% if session.get('user_id') %}
+                     <li>
+                        <a href="{{ url_for('user_login') }}">个人中心</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">注销</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ url_for('login') }}">登录</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('register') }}">注册</a>
+                    </li>
+                {% endif %}
             </ul>
 
         </div>
@@ -54,10 +59,10 @@
         nav_name = "{{ nav }}";
         var nav = 0;
         var children = $('#bs-example-navbar-collapse-8 ul li')
-        if (nav_name !== ""){
-             $(children).each(function(i){
+        if (nav_name !== "") {
+            $(children).each(function (i) {
                 if ($(this).text().trim() == nav_name) {
-                    nav =i;
+                    nav = i;
                     console.log(nav);
                 }
             })

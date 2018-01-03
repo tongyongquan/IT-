@@ -23,9 +23,10 @@ $(function () {
 
     var children = $('#bs-example-navbar-collapse-8 ul li');
     $(children).click(function () {
-        if($(this).hasClass('active')){
-            return false;
-        }
+        // 导航条激活的选项不可用
+        // if($(this).hasClass('active')){
+        //     return false;
+        // }
     })
 
 });

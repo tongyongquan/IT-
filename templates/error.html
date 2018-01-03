@@ -1,4 +1,4 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 {% block title %}
     错误
 {% endblock %}
@@ -8,6 +8,16 @@
 
 {% block main %}
     <div class="container">
-        <h3 class="page-title">{{ error }}</h3>
+        <div class="bs-callout bs-callout-danger text-center well" id="callout-input-needs-type">
+            <h2 class="">{{ error }}</h2>
+            <div class=" alert alert-warning">
+                <span id="delay_time"></span>
+                <a href="javaScript:back_prev();">返回上一页</a>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static',filename='js/error.js') }}"></script>
 {% endblock %}
