@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    个人中心
+{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}">
+{% endblock %}
+
+{% block main %}
+
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a href="#">Hello: {{ user.username }}</a></li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    个人管理<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="">修改头像</a></li>
+                    <li><a href="#">修改密码</a></li>
+                    <li><a href="#"></a></li>
+                </ul>
+            </li>
+            <li role="presentation"><a href="{{ url_for('article_add') }}">发布文章</a></li>
+
+        </ul>
+
+
+        <div class="container" style="overflow: hidden;">
+            <div class="col-md-7">
+                <div class="row" style="background-color:darkslategray;color: #fff;"> 我的文章</div>
+                <div class="row">
+                    <ul class="list-group">
+                        {% for article in article_pagination.items %}
+                            <li class="list-group-item">
+                                <div>
+                                    <h4><a href="{{ url_for('article',article_id=article.id) }}">{{ article.title }}</a>
+                                    </h4>
+                                    <div>
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        <span style="margin-left: 5px">{{ article.create_time }}</span>
+                                        <span style="margin-left: 20px" class="glyphicon glyphicon-eye-open"></span>
+                                        <span style="margin-left: 5px">{{ article.click_count }}</span>
+                                        <span style="margin-left: 20px" class="glyphicon glyphicon-comment"></span>
+                                        <span style="margin-left: 5px">
+                                            {% with count = article_comment_count_dict[article.id] %}
+                                                {% if count %}
+                                                    {{ count }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            {% endwith %}
+                                        </span>
+                                        <span style="margin-left: 20px" class="glyphicon glyphicon-thumbs-up"></span>
+                                        <span style="margin-left: 5px">{{ article.good_count }}</span>
+                                    </div>
+                                    <p>{{ article.info }}</p>
+                                    <span><a href="{{ url_for('article',article_id=article.id) }}">查看全文</a></span>
+                                    <span><a href="{{ url_for('article_edit',article_id=article.id) }}">编辑</a></span>
+                                    <span><a href="{{ url_for('article_delete',article_id=article.id) }}">删除</a></span>
+                                </div>
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+                    <!-- 分页 -->
+                    {% import '_macros_pagination.html' as macros %}
+                    {% if article_pagination %}
+                        {{ macros.pagination_widget(article_pagination,base_url+'?page=') }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-5">
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+

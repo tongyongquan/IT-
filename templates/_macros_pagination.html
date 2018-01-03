@@ -1,0 +1,40 @@
+{% macro pagination_widget(pagination, base_url) %}
+    {% if pagination and pagination.page>1 %}
+        <div class="text-center">
+            <div class="pagination">
+                <ul class="pagination">
+                    <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
+                        <a href="
+
+                                {% if pagination.has_prev %}{{ base_url }}{{ pagination.prev_num }}{% else %}javascript:;{% endif %}">
+                            &laquo;
+                        </a>
+                    </li>
+                    </li>
+                    {% for p in pagination.iter_pages() %}
+                        {% if p %}
+                            {% if p == pagination.page %}
+                                <li class="active">
+                                    <a href="{{ base_url }}{{ p }}">{{ p }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="{{ base_url }}{{ p }}">{{ p }}</a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="disabled"><a href="javascript:;">&hellip;</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li{% if not pagination.has_next %} class="disabled"{% endif %}>
+                        <a href="
+
+                                {% if pagination.has_next %}{{ base_url }}{{ pagination.next_num }}{% else %}javascript:;{% endif %}">
+                            &raquo;
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}

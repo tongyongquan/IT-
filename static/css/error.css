@@ -1,0 +1,19 @@
+.container .bs-callout-danger {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    border-left: 5px #ce4844;
+    text-align: center;
+}
+
+.container .bs-callout-danger h4 {
+    color: #ce4844;
+}
+
+.container .bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: 500;
+}

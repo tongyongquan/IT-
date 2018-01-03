@@ -1,0 +1,31 @@
+{% macro content_right(column_label_list,recommended_content,hot_content) %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/right.css') }}">
+    <ol class="breadcrumb">
+        <li class="">栏目列表</li>
+    </ol>
+    <div class="well">
+        {% for label in column_label_list %}
+            <a href="{{ url_for('content',label_id=label.id) }}" class="label label-primary">{{ label.name }}</a>
+        {% endfor %}
+    </div>
+    <hr>
+    <div class="list-group">
+        <span class="list-group-item active">
+            <h5 class="list-group-item-heading">推荐内容</h5>
+        </span>
+        {% for article in recommended_content %}
+            <a href="{{ url_for('article',article_id=article.id) }}" class="list-group-item">
+            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            <span class="list-group-item-heading">{{ article.title }}</span>
+            <p class="list-group-item-text">{{ article.info }}</p>
+            </a>
+        {% endfor %}
+    </div>
+    <hr>
+    <div class="list-group">
+        <span class="list-group-item active">热点内容</span>
+        {% for article in hot_content %}
+            <a href="{{ url_for('article',article_id=article.id) }}" class="list-group-item">{{ article.title }}</a>
+        {% endfor %}
+    </div>
+{% endmacro %}

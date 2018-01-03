@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    主页
+{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div id="myCarousel" class="carousel slide">
+                            <!-- 轮播（Carousel）指标 -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2"></li>
+                            </ol>
+                            <!-- 轮播（Carousel）项目 -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="{{ url_for('static',filename='images/main/1.jpg') }}" alt=""
+                                         class="imgge">
+                                    <div class="carousel-caption">标题 1</div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{ url_for('static',filename='images/main/2.jpg') }}" alt=""
+                                         class="imgge">
+                                    <div class="carousel-caption">标题 2</div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{ url_for('static',filename='images/main/3.jpg') }}" alt=""
+                                         class="imgge">
+                                    <div class="carousel-caption">标题 3</div>
+                                </div>
+
+                            </div>
+                            <!-- 轮播（Carousel）导航 -->
+                            <a class="carousel-control left" href="#myCarousel"
+                               data-slide="prev" role="button">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control right" href="#myCarousel"
+                               data-slide="next" role="button">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                        <script>
+                            $("#myCarousel").carousel({
+                                interval: 2000
+                            })
+                        </script>
+                        <div class="recommend">
+                            <h5>
+                                特别推荐
+                            </h5>
+                            <ul>
+                                <li><a href="">微信</a>
+                                    <laber class="pull-right">12-15</laber>
+                                </li>
+                                <li><a href="">微信</a>
+                                    <laber class="pull-right">12-15</laber>
+                                </li>
+                                <li><a href="">微信</a>
+                                    <laber class="pull-right">12-15</laber>
+                                </li>
+                                <li><a href="">微信</a>
+                                    <laber class="pull-right">12-15</laber>
+                                </li>
+                                <li><a href="">微信</a>
+                                    <laber class="pull-right">12-15</laber>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-7" style="border: 1px solid #d4d4d4;">
+
+                        <div style="height: 400px;">
+
+                            <h5>最新更新</h5>
+
+                            <ul class="update list-group-item-text">
+                                {% for article in index_article %}
+                                    <li><a href="{{ url_for('article',article_id=article.id) }}">{{ article.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row label_article_container">
+                    {% for label in nav_label %}
+                        <div class="col-md-6 label_content">
+                        <div class="caption">
+                            <span><strong><a href="{{ url_for('content',label_id=label.id) }}">{{ label.name }}</a></strong></span>
+                            <span class="pull-right"><a href="{{ url_for('content',label_id=label.id) }}">更多...</a></span>
+                        </div>
+                        <ul class="index_article_list">
+                            {% for article2 in label_main_article_dict[label.id] %}
+                                <li>
+                                    <span> > {{ article2.modify_time }} </span>
+                                    <a href="{{ url_for('article',article_id=article2.id) }}">{{ article2.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="col-md-3 ">
+                {% import '_macros_content_right.html' as content_right %}
+                {{ content_right.content_right(column_label_list,recommended_content,hot_content) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

@@ -9,23 +9,11 @@ function getUrlParam(name) {
 }
 
 $(function () {
-    var nav = getUrlParam('nav');
-    var children = $('#bs-example-navbar-collapse-8 > ul').children();
-    var len = children.length - 1;
-    nav = nav > len ? 0 : nav;
-    $(children[nav]).addClass('active');
-    // 导航条浮在最上面
-    $(window).scroll(function () {
-        var logo =$('.container').height();
-        if ($(this).scrollTop()>logo) {
-            $('#navbar').addClass('navbar-fixed-top');
-        }else{
-            $('#navbar').removeClass('navbar-fixed-top');
-        }
-    })
+
 });
 
-function loadData(num) {
-    $("#PageCount").val(num.toString());
-}
+// function loadData(num) {
+//
+//     $("#PageCount").val(num.toString());
+// }
 

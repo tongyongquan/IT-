@@ -1,0 +1,9 @@
+{% macro content_top_label(path_label) %}
+    <ol class="breadcrumb">
+        <li><span>当前位置:</span></li>
+        <li><a href="/">主页</a></li>
+        {% for label in path_label %}
+            <li><a href="{{ url_for('content',label_id=label.id) }}">{{ label.name }}</a></li>
+        {% endfor %}
+    </ol>
+{% endmacro %}
