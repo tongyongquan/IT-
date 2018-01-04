@@ -9,4 +9,4 @@ class MySQLAlchemy(SQLAlchemy):
         return super(MySQLAlchemy, self).create_session(options)
 
 
-db = MySQLAlchemy()
+db = SQLAlchemy()

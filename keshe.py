@@ -25,7 +25,6 @@ app.jinja_env.globals['User'] = User
 app.jinja_env.auto_reload = True
 
 
-
 @app.before_request
 def before_request():
     user_id = session.get('user_id')

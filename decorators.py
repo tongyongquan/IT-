@@ -1,11 +1,10 @@
 # encoding: utf-8
-
 from functools import wraps
 
 from flask import redirect, url_for, g, render_template, session
 
 # 登录限制的装饰器
-from models import Article, UserAuthority
+from models import Article
 
 
 def login_required(func):
