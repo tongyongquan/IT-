@@ -8,3 +8,4 @@
     CREATE DATABASE ke_she charset utf8;
     '''
 #如果要安装requirements.txt中的类库内容，那么你可以执行pip install -r requirements.txt.
+#2018-1-04
