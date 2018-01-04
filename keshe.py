@@ -5,7 +5,7 @@ from datetime import timedelta
 from flask import Flask, render_template, session, redirect, url_for, make_response, g
 from sqlalchemy import func
 
-from decorators import login_required, article_author_required
+from decorators import login_required, article_author_required, admin_required
 from services import *
 from utils import create_md5
 
@@ -17,10 +17,13 @@ app.config.from_object(config)
 # jinja extension 添加表达式的语句支持  do loop(for)
 app.jinja_env.add_extension('jinja2.ext.do')
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
+db.init_app(app)
 # 添加jinja的全局变量 session
 app.jinja_env.globals['session'] = session
+app.jinja_env.globals['db'] = db
+app.jinja_env.globals['User'] = User
 app.jinja_env.auto_reload = True
-db.init_app(app)
+
 
 
 @app.before_request
@@ -47,6 +50,12 @@ def index():
     index_article = Article.query.filter().order_by(Article.modify_time).offset(0).limit(14).all()
     index_article = map(to_article_info, index_article)
     page_content['index_article'] = index_article
+
+    # 特别推荐
+    good_article_list = Article.query.filter().order_by(
+        Article.good_count.desc(), Article.modify_time.desc()
+    ).offset(0).limit(8).all()
+    page_content['good_article_list'] = map(article_modify_time_to_month_day, good_article_list)
     # 最下面的栏目
     nav_label = page_content['nav_label']
     label_main_article_dict = {}
@@ -74,6 +83,9 @@ def login():
             session.permanent = True
             app.permanent_session_lifetime = timedelta(days=config.session_lifetime)
             session['user_id'] = login_user.id
+            user_authority = UserAuthority.query.filter(UserAuthority.user == login_user).first()
+            if user_authority:
+                session['admin_id'] = login_user.id
             return redirect(url_for('index'))
         else:
             page_content['error'] = u'用户名或密码错误!'
@@ -137,7 +149,7 @@ def register():
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
+    session.clear()
     return redirect(url_for('index'))
 
 
@@ -215,8 +227,10 @@ def user_login():
 @login_required
 def article_add():
     if request.method == 'GET':
+        page_content = get_page_content()
         all_label = Label.query.all()
-        return render_template('article/add.html', all_label=all_label)
+        page_content['all_label'] = all_label
+        return render_template('article/add.html', **page_content)
     else:
         title = request.form.get('title')
         info = request.form.get('info')
@@ -236,6 +250,8 @@ def article_add():
 def article_delete(article_id):
     article_model = Article.query.filter(Article.id == article_id).first()
     if request.method == 'GET':
+        # 删除文章
+        Comment.query.filter(Comment.article == article_model).delete(synchronize_session=False)
         db.session.delete(article_model)
         db.session.commit()
     return redirect(url_for('user_login'))
@@ -261,6 +277,8 @@ def article_edit(article_id):
         article_model.info = info
         article_model.content = form_content
         article_model.label_id = label_id
+        article_model.modify_time = datetime.now()
+        db.session.commit()
         return redirect(url_for('user_login'))
 
 
@@ -325,6 +343,8 @@ def content(label_id=0):
         Article.label_id.in_(label_id_list)).order_by(
         Article.modify_time.desc()).paginate(
         page=page, per_page=page_size)
+    db.session.close()
+    article_pagination.items = map(to_article_info, article_pagination.items)
     page_content['article_pagination'] = article_pagination
 
     # 右边
@@ -336,6 +356,94 @@ def content(label_id=0):
     set_hot_content(page_content)
 
     return render_template('content.html', **page_content)
+
+
+@app.route('/admin')
+@login_required
+@admin_required
+def admin():
+    all_label = Label.query.all()
+    page_content = get_page_content()
+    page_content['nav'] = nav_select['label']
+    page_content['all_label'] = all_label
+
+    return render_template('admin/index.html', **page_content)
+
+
+@app.route('/label/edit/<label_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def label_edit(label_id):
+    page_content = get_page_content()
+    page_content['nav'] = nav_select['label']
+    label = Label.query.filter(Label.id == label_id).first()
+
+    if not label:
+        page_content['error'] = u'标签不存在!'
+        return render_template('error.html', **page_content)
+    page_content['label'] = label
+    if request.method == 'GET':
+        all_label = Label.query.filter(Label.id != label_id).all()
+        page_content['all_label'] = all_label
+        return render_template('label/edit.html', **page_content)
+    else:
+        name = request.form.get('name')
+        if name == '':
+            page_content['error'] = u'标签名不能为空!'
+            return render_template('error.html', **page_content)
+        temp = Label.query.filter(Label.name == name).first()
+        if temp and temp != label:
+            page_content['error'] = u'已经存在该标签名!'
+            return render_template('error.html', **page_content)
+        parent_id = request.form.get('parent_id')
+        label.name = name
+        parent = Label.query.filter(Label.id == parent_id).first()
+        label.parent = parent
+        db.session.commit()
+        return redirect(url_for('admin'))
+
+
+@app.route('/label/add', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def label_add():
+    page_content = get_page_content()
+    page_content['nav'] = nav_select['label']
+    if request.method == 'GET':
+        all_label = Label.query.all()
+        page_content['all_label'] = all_label
+        return render_template('label/add.html', **page_content)
+    else:
+        name = request.form.get('name')
+        if name == '':
+            page_content['error'] = u'标签名不能为空!'
+            return render_template('error.html', **page_content)
+        temp = Label.query.filter(Label.name == name).first()
+        if temp:
+            page_content['error'] = u'已经存在该标签名!'
+            return render_template('error.html', **page_content)
+        parent_id = request.form.get('parent_id')
+        parent = Label.query.filter(Label.id == parent_id).first()
+        label = Label(name=name)
+        label.parent = parent
+        db.session.add(label)
+        db.session.commit()
+        return redirect(url_for('admin'))
+
+
+@app.route('/label/delete/<label_id>')
+@login_required
+@admin_required
+def label_delete(label_id):
+    label = Label.query.filter(Label.id == label_id).first()
+    if label:
+        children_label = Label.query.filter(Label.parent_id == label_id).all()
+        other_label = Label.query.filter(Label.name == '其他').first()
+        for child in children_label:
+            child.parent = other_label
+        db.session.delete(label)
+        db.session.commit()
+    return redirect(url_for('admin'))
 
 
 if __name__ == '__main__':

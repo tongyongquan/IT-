@@ -20,7 +20,7 @@ class Label(db.Model):
     __tablename__ = 'label'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     name = db.Column(db.VARCHAR(50), nullable=False, default='', server_default='')
-    parent_id = db.Column(db.BigInteger, db.ForeignKey('label.id'), default=0)
+    parent_id = db.Column(db.BigInteger, db.ForeignKey('label.id'))
 
     parent = db.relationship(
         'Label',
@@ -66,5 +66,15 @@ class Comment(db.Model):
     article_id = db.Column(db.BigInteger, db.ForeignKey('article.id'), nullable=False)
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), nullable=False)
 
-    article = db.relationship('Article', backref=db.backref('comments'), order_by=create_time.desc())
+    article = db.relationship('Article', backref=db.backref('comments'), cascade='all, delete',
+                              order_by=create_time.desc())
     user = db.relationship('User', backref=db.backref('comments'), order_by=create_time.desc())
+
+
+class UserAuthority(db.Model):
+    __tablename__ = 'user_authority'
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    authority = db.Column(db.VARCHAR(100), nullable=False, default='admin', server_default='admin')
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), nullable=False)
+
+    user = db.relationship('User', backref=db.backref('user_authorities'))

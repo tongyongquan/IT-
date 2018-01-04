@@ -1,0 +1,42 @@
+{% extends'base.html' %}
+
+{% block title %}
+    admin
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/label_admin.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <table class="table">
+            <div class="col-md-4 ">
+                <h3 class="title_label_name">栏目标签</h3>
+            </div>
+            <div class="col-md-6">
+                <a href="{{ url_for('label_add') }}" class="btn btn-primary pull-right add-label">添加标签</a>
+            </div>
+            <thead>
+            <tr>
+                <th>标签ID</th>
+                <th>标签名</th>
+                <th>父标签</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for label in all_label %}
+                <tr>
+                    <th scope="row">{{ label.id }}</th>
+                    <td>{{ label.name }}</td>
+                    <td>{{ label.parent.name }}</td>
+                    <td><a href="{{ url_for('label_edit',label_id=label.id) }}" class="btn btn-info">编辑</a></td>
+                    <td><a href="{{ url_for('label_delete',label_id=label.id) }}" class="btn btn-danger">删除</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

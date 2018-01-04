@@ -4,7 +4,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/content.css') }}">
-{#    <link rel="stylesheet" href="{{ url_for('static',filename='lib/paginator/myPage.css') }}">#}
+    {#    <link rel="stylesheet" href="{{ url_for('static',filename='lib/paginator/myPage.css') }}">#}
 {% endblock %}
 
 {% block main %}
@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
-                    {% import '_macros_content_top_label.html' as content_top_label  %}
+                    {% import '_macros_content_top_label.html' as content_top_label %}
                     {{ content_top_label.content_top_label(path_label) }}
                     <!-- 媒体对象 -->
                     {% for article in article_pagination.items %}
@@ -20,7 +20,7 @@
                             <div class="media-left">
                                 <img class="media-object" data-src="holder.js/64x64" alt="64x64"
                                      style="width: 64px; height: 64px;"
-                                     src="{{ url_for('static',filename=article.author.avatar_path) }}"
+                                     src="{{ url_for('static',filename=db.session.query(User).filter(User.id == article.author_id).first().avatar_path) }}"
                                      data-holder-rendered="true">
                             </div>
                             <div class="media-body">
@@ -29,15 +29,15 @@
                                     {% if article.label %}
                                         <a href="{{ url_for('content',label_id=article.label.id) }}">[{{ article.label.name }}]</a>
                                     {% endif %}
-{#                                    {% with label = article.label.parent %}#}
-{#                                        {% for _ in range(1, 5) %}#}
-{#                                            {% if not label %}#}
-{#                                                {% break %}#}
-{#                                            {% endif %}#}
-{#                                            <a href="{{ url_for('content',label_id=label.id) }}">[{{ label.name }}]</a>#}
-{#                                            {% set label = label.parent %}#}
-{#                                        {% endfor %}#}
-{#                                    {% endwith %}#}
+                                    {#                                    {% with label = article.label.parent %}#}
+                                    {#                                        {% for _ in range(1, 5) %}#}
+                                    {#                                            {% if not label %}#}
+                                    {#                                                {% break %}#}
+                                    {#                                            {% endif %}#}
+                                    {#                                            <a href="{{ url_for('content',label_id=label.id) }}">[{{ label.name }}]</a>#}
+                                    {#                                            {% set label = label.parent %}#}
+                                    {#                                        {% endfor %}#}
+                                    {#                                    {% endwith %}#}
                                     <a href="{{ url_for('article',article_id = article.id) }}">{{ article.title }}</a>
                                 </h5>
                                 <h6 class="media-middle">
@@ -51,7 +51,7 @@
                     {% endfor %}
 
                     <!-- 分页 -->
-                    {%import '_macros_pagination.html' as macros %}
+                    {% import '_macros_pagination.html' as macros %}
                     {% if article_pagination %}
                         {{ macros.pagination_widget(article_pagination,base_url+'?page=') }}
                     {% endif %}
@@ -70,7 +70,7 @@
 
 {% block js %}
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-{#    <script src="{{ url_for('static',filename='lib/paginator/jqPaginator.min.js') }}"></script>#}
-{#    <script src="{{ url_for('static',filename='lib/paginator/myPage.js') }}"></script>#}
+    {#    <script src="{{ url_for('static',filename='lib/paginator/jqPaginator.min.js') }}"></script>#}
+    {#    <script src="{{ url_for('static',filename='lib/paginator/myPage.js') }}"></script>#}
     <script src="{{ url_for('static',filename='js/content.js') }}"></script>
 {% endblock %}

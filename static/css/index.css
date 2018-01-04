@@ -40,6 +40,8 @@ a{
 }
 .label_content{
     height: 200px;
+    /*vertical-align: middle;*/
+
 }
 .label_content .caption{
     border-bottom: 1px solid #DADADA;

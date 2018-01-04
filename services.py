@@ -20,6 +20,7 @@ nav_select = {
     'register': u'注册',
     'user': u'个人中心',
     'logout': u'注销',
+    'label': u'标签管理',
 }
 
 
@@ -70,7 +71,8 @@ def to_article_info(article):
     info = article.info
     if len(article.info) > config.article_introduction_length:
         info = article.info[0:config.article_introduction_length - 3] + '...'
-    article_temp = Article(id=article.id, title=article.title, info=info)
+    article_temp = Article(id=article.id, title=article.title, info=info, label_id=article.label_id,
+                           author_id=article.author_id)
     return article_temp
 
 
