@@ -1,6 +1,6 @@
 # encoding: utf-8
 import random
-
+import PIL
 import sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from io import BytesIO
@@ -12,7 +12,8 @@ _letter_cases = "abcdefghjkmnpqrstuvwxy"  # 小写字母，去除可能干扰的
 _upper_cases = _letter_cases.upper()  # 大写字母
 _numbers = ''.join(map(str, range(3, 10)))  # 数字
 init_chars = ''.join((_letter_cases, _upper_cases, _numbers))
-fontType = "arial.ttf"
+fontType ='SFNSTextItalic.ttf'
+    # "arial.ttf"
 
 
 def create_validate_code(size=(120, 30),
